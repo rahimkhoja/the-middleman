@@ -1,6 +1,6 @@
 #!/bin/bash
 # Middle Man - Web Site Caching & Optomizing System
-# By Rahim Khoja (rahim@khoja.cakhojacorp.com)
+# By Rahim Khoja (rahim.khoja@alumni.ubc.ca)
 
 # Requirements: CentOS 7 Base Intsall
 #               Internet Access
