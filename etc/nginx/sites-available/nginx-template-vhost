@@ -1,0 +1,178 @@
+#server {
+
+#        listen 443 ssl http2;
+
+#        server_name <domain> www.<domain>;
+
+#        # SSL
+#        ssl_certificate /etc/letsencrypt/live/<domain>/fullchain.pem;
+#        ssl_certificate_key /etc/letsencrypt/live/<domain>/privkey.pem;
+#        ssl_trusted_certificate /etc/letsencrypt/live/<domain>/chain.pem;
+
+#        # SSL Options
+#        include defaults/ssl.conf;
+
+#        # Compression ( Gzip & Brotli )
+#        include defaults/compression.conf;
+
+#        # security
+#        include defaults/security.conf;
+
+#        real_ip_header X-Forwarded-For;
+#        real_ip_recursive on;
+
+#        # logging
+#        access_log /var/log/nginx/<domain>-443.access.log;
+#        error_log /var/log/nginx/<domain>-443.error.log warn;
+
+#        # general
+#        include defaults/general.conf;
+
+#        # reverse proxy
+#        location / {
+#                # Proxy Config Defaults
+#                include defaults/proxy.conf;
+
+#                proxy_set_header Host <domain>;
+
+#                # Varnish Proxy Address
+#                proxy_pass http://127.0.0.1:6081/;
+
+#        }
+
+#        location = /favicon.ico {
+#                log_not_found off;
+#                access_log off;
+
+#                include defaults/proxy.conf;
+
+#                proxy_set_header Host <domain>;
+
+#                # Varnish Proxy Address
+#                proxy_pass http://127.0.0.1:6081;
+#               }
+
+#        # robots.txt
+#        location = /robots.txt {
+
+#                log_not_found off;
+#                access_log off;
+
+#                include defaults/proxy.conf;
+
+#                proxy_set_header Host <domain>;
+
+#                # Varnish Proxy Address
+#                proxy_pass http://127.0.0.1:6081;
+
+#        }
+
+#        # assets, media
+#        location ~* \.(?:css(\.map)?|js(\.map)?|jpe?g|png|gif|ico|cur|heic|webp|tiff?|mp3|m4a|aac|ogg|midi?|wav|mp4|mov|webm|mpe?g|avi|ogv|flv|wmv)$ {
+#                expires 7d;
+#                access_log off;
+
+#                include defaults/proxy.conf;
+
+#                proxy_set_header Host <domain>;
+
+#                # Varnish Proxy Address
+#                proxy_pass http://127.0.0.1:6081;
+
+#               }
+
+#        # svg, fonts
+#        location ~* \.(?:svgz?|ttf|ttc|otf|eot|woff2?)$ {
+#                add_header Access-Control-Allow-Origin "*";
+#                expires 7d;
+#                access_log off;
+
+#                include defaults/proxy.conf;
+
+#                proxy_set_header Host <domain>;
+
+#                # Varnish Proxy Address
+#                proxy_pass http://127.0.0.1:6081;
+
+#               }
+
+#}
+
+
+## HTTP to HTTPS Redirect
+server {
+        listen 80;
+        server_name <domain> www.<domain>;
+
+        # maintain the .well-known directory alias for renewals
+        location /.well-known {
+                alias /var/www/<domain>/.well-known/;
+        }
+
+        # Enable the following line after the initial certbot cert creation run.
+        # it will auto redirect to https.
+        return 301 https://<domain>$request_uri;
+}
+
+## HTTP 8080 Reverse Proxy
+server {
+
+        listen 8080;
+        server_name <domain> www.<domain>;
+
+        # PageSpeed Module
+        include defaults/pagespeed_adv.conf;
+
+        pagespeed FileCachePath "/var/cache/<domain>/";
+
+        real_ip_header X-Forwarded-For;
+        real_ip_recursive on;
+
+        # logging
+        access_log /var/log/nginx/<domain>-8080.access.log;
+        error_log /var/log/nginx/<domain>-8080.error.log warn;
+
+        # Error 4xx Location
+        location @error4xx {
+                return 302 http://www.<domain>; # Trying New URL & Response Code. 302 Was Previos Response Code
+        }
+
+        # Reverse Proxy
+        location / {
+                expires 7d;
+
+                sub_filter_once off;
+                sub_filter 'http://<domain>'  'https://<domain>';
+                sub_filter 'http://www.<domain>'  'https://www.<domain>';
+
+                proxy_intercept_errors on;
+                error_page 401 404 = @error4xx;
+
+                # Proxy Config Defaults
+                include defaults/proxy.conf;
+
+                proxy_set_header Host <domain>;
+
+                # Proxy Address
+                proxy_pass https://<proxy>;
+        }
+
+        location /wp-admin {
+                expires 7d;
+
+                sub_filter_once off;
+                sub_filter 'http://<domain>'  'https://<domain>';
+                sub_filter 'http://www.<domain>'  'https://www.<domain>';
+
+                proxy_intercept_errors on;
+                error_page 401 404 = @error4xx;
+
+                # Proxy Config Defaults
+                include defaults/proxy.conf;
+
+                proxy_set_header Host <domain>;
+
+                # Proxy Address
+                proxy_pass https://<proxy>/wp-admin/;
+        }
+}
