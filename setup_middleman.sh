@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 # Middle Man - Web Site Caching & Optomizing System
 # By Rahim Khoja (rahim.khoja@alumni.ubc.ca)
 
@@ -6,6 +6,30 @@
 #               Internet Access
 #               Static Public IP
 #               getpagespeed Repo Access (Fee) or Manually Created RPM's of the same Packages
+
+set -eE  # same as: `set -o errexit -o errtrace`
+# Dump Vars Function
+function dump_vars {
+  if ! ${LOGFILE+false};then echo "LOGFILE = ${LOGFILE}";fi
+  if ! ${SCRIPTDIR+false};then echo "SCRIPTDIR = ${SCRIPTDIR}";fi
+}
+
+# Failure Function
+failure() {
+  local lineno=$1
+  local msg=$2
+  echo "Error at Line: $lineno. - $msg"
+  echo ""
+  if [[ "$DEBUG" -eq 1 ]] then ;
+    dump_vars
+  fi
+}
+
+# Default Variriable Declaration
+LOGFILE=/var/log/logfilename.log
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+DEBUG=1
+
 
 # getPageSpeed Repo Installation
 yum -y install https://extras.getpagespeed.com/release-latest.rpm
