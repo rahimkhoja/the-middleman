@@ -28,6 +28,13 @@ function failure() {
   fi
 }
 
+# Check the bash shell script is being run by root
+if [[ $EUID -ne 0 ]];
+then
+    echo "This script must be run as root" 1>&2
+    exit 1
+fi
+
 # Default Variriable Declaration
 LOGFILE=/var/log/logfilename.log
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
