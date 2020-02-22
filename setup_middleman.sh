@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 # Middle Man - Web Site Caching & Optomizing System
 # By Rahim Khoja (rahim.khoja@alumni.ubc.ca)
 
@@ -12,6 +12,7 @@ set -eE  # same as: `set -o errexit -o errtrace`
 function dump_vars {
   if ! ${LOGFILE+false};then echo "LOGFILE = ${LOGFILE}";fi
   if ! ${SCRIPTDIR+false};then echo "SCRIPTDIR = ${SCRIPTDIR}";fi
+    if ! ${DEBUG+false};then echo "DEBUG = ${DEBUG}";fi
 }
 
 # Failure Function
@@ -20,7 +21,7 @@ failure() {
   local msg=$2
   echo "Error at Line: $lineno. - $msg"
   echo ""
-  if [[ "$DEBUG" -eq 1 ]] then ;
+  if [[ $DEBUG -eq 1 ]]; then
     dump_vars
   fi
 }
@@ -30,6 +31,7 @@ LOGFILE=/var/log/logfilename.log
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 DEBUG=1
 
+Fail On This
 
 # getPageSpeed Repo Installation
 yum -y install https://extras.getpagespeed.com/release-latest.rpm
