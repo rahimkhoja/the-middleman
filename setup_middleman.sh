@@ -46,14 +46,6 @@ firewall-cmd --permanent --add-port=6081/tcp   # May Not Be Needed
 firewall-cmd --permanent --add-port=6082/tcp   # May Not Be Needed
 firewall-cmd --reload
 
-/etc/sysconfig/network-scripts/route-ens192
-
-
-
-varnishadm -T 127.0.0.1:6082 url.purge .
-
-
-
 
 yum -y install https://extras.getpagespeed.com/release-latest.rpm
 
@@ -64,22 +56,26 @@ yum clean
 yum install -y letsencrypt nginx certbot certbot-nginx cockpit nginx-module-pagespeed nginx-module-nbr varnish varnish-modules vmod-geoip2
 
 
+# Create Nginx Directories
+mkdir -p /etc/nginx/defaults || :
+mkdir -p /etc/nginx/sites-available || :
+mkdir -p /etc/nginx/sites-enabled || :
 
-mkdir -p /etc/nginx/defaults
-mkdir -p /etc/nginx/sites-available
-mkdir -p /etc/nginx/sites-enabled
+# Create Varnish Directories 
+mkdir -p /etc/varnish/sites-enabled || :
+mkdir -p /etc/varnish/sites-available || :
 
-mkdir -p /etc/varnish/sites-enabled
-mkdir -p /etc/varnish/sites-available
+# Create SSL Cert Directories
+mkdir -p /etc/ssl/certs || :
 
+# Create Local SSL Cert
 openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-openssl dhparam -out /etc/ssl/dhparams.pem 2048
+#openssl dhparam -out /etc/ssl/dhparams.pem 2048
 
 /etc/varnish/varnish.params
 /etc/varnish/all-vhosts.vcl
 /etc/varnish/default.vcl
 /etc/varnish/catch-all.vcl
-
 
 
 /etc/nginx/nginx.conf
@@ -94,7 +90,3 @@ vi /etc/nginx/defaults/pagespeed_adv.conf
 vi /etc/nginx/defaults/pagespeed.conf
 vi /etc/nginx/defaults/ssl.conf
 vi /etc/nginx/defaults/compression.conf
-
-  199  vi /etc/varnish/sites-enabled/hiive.biz.vcl
-  
-  
