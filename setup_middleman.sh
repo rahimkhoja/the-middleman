@@ -7,16 +7,18 @@
 #               Static Public IP
 #               getpagespeed Repo Access (Fee) or Manually Created RPM's of the same Packages
 
+# Stop on Error
 set -eE  # same as: `set -o errexit -o errtrace`
+
 # Dump Vars Function
 function dump_vars {
   if ! ${LOGFILE+false};then echo "LOGFILE = ${LOGFILE}";fi
   if ! ${SCRIPTDIR+false};then echo "SCRIPTDIR = ${SCRIPTDIR}";fi
-    if ! ${DEBUG+false};then echo "DEBUG = ${DEBUG}";fi
+  if ! ${DEBUG+false};then echo "DEBUG = ${DEBUG}";fi
 }
 
 # Failure Function
-failure() {
+function failure() {
   local lineno=$1
   local msg=$2
   echo "Error at Line: $lineno. - $msg"
@@ -72,16 +74,6 @@ firewall-cmd --permanent --add-port=6081/tcp   # May Not Be Needed
 firewall-cmd --permanent --add-port=6082/tcp   # May Not Be Needed
 firewall-cmd --reload
 
-
-yum -y install https://extras.getpagespeed.com/release-latest.rpm
-
-sed -i 's@repo_gpgcheck=.*@repo_gpgcheck=1@' /etc/yum.repos.d/getpagespeed-extras.repo
-
-yum clean
-
-yum install -y letsencrypt nginx certbot certbot-nginx cockpit nginx-module-pagespeed nginx-module-nbr varnish varnish-modules vmod-geoip2
-
-
 # Create Nginx Directories
 mkdir -p /etc/nginx/defaults || :
 mkdir -p /etc/nginx/sites-available || :
@@ -98,21 +90,21 @@ mkdir -p /etc/ssl/certs || :
 openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 #openssl dhparam -out /etc/ssl/dhparams.pem 2048
 
-/etc/varnish/varnish.params
-/etc/varnish/all-vhosts.vcl
-/etc/varnish/default.vcl
-/etc/varnish/catch-all.vcl
+# Copy Default Varnish Config Files 
+cp "${SCRIPTDIR}/etc/varnish/varnish.params" /etc/varnish/varnish.params
+cp "${SCRIPTDIR}/etc/varnish/all-vhosts.vcl" /etc/varnish/all-vhosts.vcl
+cp "${SCRIPTDIR}/etc/varnish/default.vcl" /etc/varnish/default.vcl
+cp "${SCRIPTDIR}/etc/varnish/catch-all.vcl" /etc/varnish/catch-all.vcl
 
-
-/etc/nginx/nginx.conf
-/etc/nginx/conf.d/default.conf
-
-vi /etc/nginx/conf.d/nginx-confd-default
-vi /etc/nginx/defaults/general.conf
-vi /etc/nginx/defaults/pagespeed.conf
-vi /etc/nginx/defaults/proxy.conf
-vi /etc/nginx/defaults/security.conf
-vi /etc/nginx/defaults/pagespeed_adv.conf
-vi /etc/nginx/defaults/pagespeed.conf
-vi /etc/nginx/defaults/ssl.conf
-vi /etc/nginx/defaults/compression.conf
+# Copy Default NGINX Config Files
+cp "${SCRIPTDIR}/etc/nginx/nginx.conf
+cp "${SCRIPTDIR}/etc/nginx/sites-enabled/default.conf
+cp "${SCRIPTDIR}/etc/nginx/sites-available/nginx-confd-default
+cp "${SCRIPTDIR}/etc/nginx/defaults/general.conf
+cp "${SCRIPTDIR}/etc/nginx/defaults/pagespeed.conf
+cp "${SCRIPTDIR}/etc/nginx/defaults/proxy.conf
+cp "${SCRIPTDIR}/etc/nginx/defaults/security.conf
+cp "${SCRIPTDIR}/etc/nginx/defaults/pagespeed_adv.conf
+cp "${SCRIPTDIR}/etc/nginx/defaults/pagespeed.conf
+cp "${SCRIPTDIR}/etc/nginx/defaults/ssl.conf
+cp "${SCRIPTDIR}/etc/nginx/defaults/compression.conf
