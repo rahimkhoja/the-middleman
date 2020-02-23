@@ -97,14 +97,22 @@ mkdir -p /etc/ssl/certs || :
 openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 #openssl dhparam -out /etc/ssl/dhparams.pem 2048
 
+# Backup Original Varnish Files
+mv -f /etc/varnish/varnish.params /etc/varnish/varnish.params.orig || :
+mv -f /etc/varnish/default.vcl /etc/varnish/default.vcl.orig || :
+
 # Copy Default Varnish Config Files 
 cp "${SCRIPTDIR}/etc/varnish/varnish.params" /etc/varnish/varnish.params
 cp "${SCRIPTDIR}/etc/varnish/all-vhosts.vcl" /etc/varnish/all-vhosts.vcl
 cp "${SCRIPTDIR}/etc/varnish/default.vcl" /etc/varnish/default.vcl
 cp "${SCRIPTDIR}/etc/varnish/catch-all.vcl" /etc/varnish/catch-all.vcl
 
+# Backup Original NGINX Files
+mv -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig || :
+mv -f /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.orig || :
+
 # Copy Default NGINX Config Files
-cp "${SCRIPTDIR}/etc/nginx/nginx.conf
+cp "${SCRIPTDIR}/etc/nginx/nginx.conf /etc/nginx/nginx.conf
 cp "${SCRIPTDIR}/etc/nginx/sites-enabled/default.conf
 cp "${SCRIPTDIR}/etc/nginx/sites-available/nginx-confd-default
 cp "${SCRIPTDIR}/etc/nginx/defaults/general.conf
