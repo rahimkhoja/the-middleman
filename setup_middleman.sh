@@ -1,10 +1,34 @@
 #!/bin/bash
-# Middle Man - Web Site Caching & Optomizing System
+# Middle Man - Web Site Caching & Optomizing System - System Setup Script
 # By Rahim Khoja (rahim.khoja@alumni.ubc.ca)
+# https://www.linkedin.com/in/rahim-khoja-879944139/
+
+echo
+echo -e "\033[0;31m░░░░░░░░▀▀▀██████▄▄▄"
+echo "░░░░░░▄▄▄▄▄░░█████████▄ "
+echo "░░░░░▀▀▀▀█████▌░▀▐▄░▀▐█ "
+echo "░░░▀▀█████▄▄░▀██████▄██ "
+echo "░░░▀▄▄▄▄▄░░▀▀█▄▀█════█▀"
+echo "░░░░░░░░▀▀▀▄░░▀▀███░▀░░░░░░▄▄"
+echo "░░░░░▄███▀▀██▄████████▄░▄▀▀▀██▌"
+echo "░░░██▀▄▄▄██▀▄███▀▀▀▀████░░░░░▀█▄"
+echo "▄▀▀▀▄██▄▀▀▌█████████████░░░░▌▄▄▀"
+echo "▌░░░░▐▀████▐███████████▌"
+echo "▀▄░░▄▀░░░▀▀██████████▀"
+echo "░░▀▀░░░░░░▀▀█████████▀"
+echo "░░░░░░░░▄▄██▀██████▀█"
+echo "░░░░░░▄██▀░░░░░▀▀▀░░█"
+echo "░░░░░▄█░░░░░░░░░░░░░▐▌"
+echo "░▄▄▄▄█▌░░░░░░░░░░░░░░▀█▄▄▄▄▀▀▄"
+echo -e "▌░░░░░▐░░░░░░░░░░░░░░░░▀▀▄▄▄▀\033[0m"
+echo "---Middle Man - Web Site Caching & Optomizing System - System Setup---"
+echo "---By: Rahim Khoja (rahim.khoja@alumni.ubc.ca)---"
+echo
+
+PATH=/my/new/path:$PATH
 
 # Requirements: CentOS 7 Base Intsall
 #               Internet Access
-#               Static Public IP
 #               getpagespeed Repo Access (Fee) or Manually Created RPM's of the same Packages
 
 # Stop on Error
@@ -123,3 +147,5 @@ cp "${SCRIPTDIR}/etc/nginx/defaults/pagespeed_adv.conf
 cp "${SCRIPTDIR}/etc/nginx/defaults/pagespeed.conf
 cp "${SCRIPTDIR}/etc/nginx/defaults/ssl.conf
 cp "${SCRIPTDIR}/etc/nginx/defaults/compression.conf
+
+PATH=/opt/middleman/bin:$PATH
