@@ -25,8 +25,6 @@ echo "---Middle Man - Web Site Caching & Optomizing System - System Setup---"
 echo "---By: Rahim Khoja (rahim.khoja@alumni.ubc.ca)---"
 echo
 
-PATH=/my/new/path:$PATH
-
 # Requirements: CentOS 7 Base Intsall
 #               Internet Access
 #               getpagespeed Repo Access (Fee) or Manually Created RPM's of the same Packages
@@ -136,16 +134,16 @@ mv -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig || :
 mv -f /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.orig || :
 
 # Copy Default NGINX Config Files
-cp "${SCRIPTDIR}/etc/nginx/nginx.conf /etc/nginx/nginx.conf
-cp "${SCRIPTDIR}/etc/nginx/sites-enabled/default.conf
-cp "${SCRIPTDIR}/etc/nginx/sites-available/nginx-confd-default
-cp "${SCRIPTDIR}/etc/nginx/defaults/general.conf
-cp "${SCRIPTDIR}/etc/nginx/defaults/pagespeed.conf
-cp "${SCRIPTDIR}/etc/nginx/defaults/proxy.conf
-cp "${SCRIPTDIR}/etc/nginx/defaults/security.conf
-cp "${SCRIPTDIR}/etc/nginx/defaults/pagespeed_adv.conf
-cp "${SCRIPTDIR}/etc/nginx/defaults/pagespeed.conf
-cp "${SCRIPTDIR}/etc/nginx/defaults/ssl.conf
-cp "${SCRIPTDIR}/etc/nginx/defaults/compression.conf
+cp "${SCRIPTDIR}/etc/nginx/nginx.conf" /etc/nginx/nginx.conf
+cp "${SCRIPTDIR}/etc/nginx/sites-enabled/default.conf" /etc/nginx/sites-enabled/default.conf
+cp "${SCRIPTDIR}/etc/nginx/sites-available/nginx-confd-default" /etc/nginx/sites-available/nginx-confd-default
+cp "${SCRIPTDIR}/etc/nginx/defaults/general.conf" /etc/nginx/defaults/general.conf
+cp "${SCRIPTDIR}/etc/nginx/defaults/pagespeed.conf" /etc/nginx/defaults/pagespeed.conf
+cp "${SCRIPTDIR}/etc/nginx/defaults/proxy.conf" /etc/nginx/defaults/proxy.conf
+cp "${SCRIPTDIR}/etc/nginx/defaults/security.conf" /etc/nginx/defaults/security.conf
+cp "${SCRIPTDIR}/etc/nginx/defaults/pagespeed_adv.conf" /etc/nginx/defaults/pagespeed_adv.conf
+cp "${SCRIPTDIR}/etc/nginx/defaults/pagespeed.conf" /etc/nginx/defaults/pagespeed.conf
+cp "${SCRIPTDIR}/etc/nginx/defaults/ssl.conf" /etc/nginx/defaults/ssl.conf
+cp "${SCRIPTDIR}/etc/nginx/defaults/compression.conf" /etc/nginx/defaults/compression.conf
 
-PATH=/opt/middleman/bin:$PATH
+echo 'PATH="/opt/middleman/bin:$PATH";export PATH' >> /etc/profile
