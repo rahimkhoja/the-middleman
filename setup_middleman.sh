@@ -1,5 +1,5 @@
 #!/bin/bash
-# Middle Man - Web Site Caching & Optomizing System - System Setup Script
+# Middle Man - Website Caching & Optimizing System - System Setup Script
 # By Rahim Khoja (rahim.khoja@alumni.ubc.ca)
 # https://www.linkedin.com/in/rahim-khoja-879944139/
 
@@ -21,7 +21,7 @@ echo "░░░░░░▄██▀░░░░░▀▀▀░░█"
 echo "░░░░░▄█░░░░░░░░░░░░░▐▌"
 echo "░▄▄▄▄█▌░░░░░░░░░░░░░░▀█▄▄▄▄▀▀▄"
 echo -e "▌░░░░░▐░░░░░░░░░░░░░░░░▀▀▄▄▄▀\033[0m"
-echo "---Middle Man - Web Site Caching & Optomizing System - System Setup---"
+echo "---Middle Man - Website Caching & Optimizing System - System Setup Script---"
 echo "---By: Rahim Khoja (rahim.khoja@alumni.ubc.ca)---"
 echo
 
