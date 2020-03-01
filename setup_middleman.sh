@@ -26,6 +26,7 @@ echo "---By: Rahim Khoja (rahim.khoja@alumni.ubc.ca)---"
 echo
 
 # Requirements: CentOS 7 Base Intsall
+#               IPV4 Public IP, (or at least a public IP's Port 80, and 443 routed)
 #               Internet Access
 #               getpagespeed Repo Access (Fee) or Manually Created RPM's of the same Packages
 
