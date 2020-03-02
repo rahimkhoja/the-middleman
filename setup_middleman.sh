@@ -58,17 +58,17 @@ then
     exit 1
 fi
 
-# Check if MiddleMan is installed.
-if [[ -f "$FILE" ]]; then
-    echo "$FILE exist"
+# Check if Varnish is installed.
+varnish=0
+if [[ -d "/etc/varnish" ]]; then
+   varnish=1 
 fi
 
-# Check if NGINX is installed. 
-FILE=/etc/resolv.conf
-if [[ -f "$FILE" ]]; then
-    echo "$FILE exist"
+# Check if NGINX is installed.
+nginx=0
+if [[ -d "/etc/nginx" ]]; then
+   nginx=1 
 fi
-
 
 # Default Variriable Declaration
 LOGFILE=/var/log/logfilename.log
