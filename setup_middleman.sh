@@ -58,6 +58,18 @@ then
     exit 1
 fi
 
+# Check if MiddleMan is installed.
+if [[ -f "$FILE" ]]; then
+    echo "$FILE exist"
+fi
+
+# Check if NGINX is installed. 
+FILE=/etc/resolv.conf
+if [[ -f "$FILE" ]]; then
+    echo "$FILE exist"
+fi
+
+
 # Default Variriable Declaration
 LOGFILE=/var/log/logfilename.log
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
