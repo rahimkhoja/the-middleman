@@ -59,16 +59,60 @@ then
 fi
 
 # Check if Varnish is installed.
-varnish=0
+varnish="0"
 if [[ -d "/etc/varnish" ]]; then
-   varnish=1 
+   varnish="1" 
 fi
 
 # Check if NGINX is installed.
-nginx=0
+nginx="0"
 if [[ -d "/etc/nginx" ]]; then
-   nginx=1 
+   nginx="1" 
 fi
+
+# Confirm Installation of MiddleMap Prompt
+finish="-1"
+middleman="0"
+while [ "$finish" = '-1' ]
+do
+    finish="1"
+    echo
+    read -p "Do you want to Install MiddleMan [y/n]? " answer
+
+    if [ "$answer" = '' ];
+    then
+        answer=""
+    else
+        case $answer in
+            y | Y | yes | YES ) answer="y"; middleman="1";;
+            n | N | no | NO ) answer="n"; middleman="0"; exit 1;;
+            *) finish="-1";
+                echo -n 'Invalid Response\n';
+        esac
+    fi
+done
+
+# Add new Certbot SSL domain Prompt
+finish="-1"
+adddomain="0"
+while [ "$finish" = '-1' ]
+do
+    finish="1"
+    echo
+    read -p "Add new SSL domain to NGINX & Certbot [y/n]? " answer
+
+    if [ "$answer" = '' ];
+    then
+        answer=""
+    else
+        case $answer in
+            y | Y | yes | YES ) answer="y"; adddomain="1";;
+            n | N | no | NO ) answer="n"; adddomain="0"; exit 1;;
+            *) finish="-1";
+                echo -n 'Invalid Response\n';
+        esac
+    fi
+done
 
 # Default Variriable Declaration
 LOGFILE=/var/log/logfilename.log
