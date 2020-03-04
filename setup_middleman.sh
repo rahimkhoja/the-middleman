@@ -70,7 +70,7 @@ if [[ -d "/etc/nginx" ]]; then
    nginx="1" 
 fi
 
-# Confirm Installation of MiddleMap Prompt
+# Prompt to Confirm Installation of MiddleMan
 finish="-1"
 middleman="0"
 while [ "$finish" = '-1' ]
@@ -92,27 +92,53 @@ do
     fi
 done
 
-# Add new Certbot SSL domain Prompt
-finish="-1"
-adddomain="0"
-while [ "$finish" = '-1' ]
-do
-    finish="1"
-    echo
-    read -p "Add new SSL domain to NGINX & Certbot [y/n]? " answer
+# Prompt - NGINX or Varnish are Already Installed, Do you wish to Continue.
+if [[ "$nginx" == "1" || "$varnish" == "1" ]]; then
+    finish="-1"
+    reinstall="0"
+    while [ "$finish" = '-1' ]
+    do
+        finish="1"
+        echo
+        read -p "MiddleMan Components are already installed. If you continue there is a Risk that settings can be overwritten. Are you sure you want to continue [y/n]? " answer
 
-    if [ "$answer" = '' ];
-    then
-        answer=""
-    else
-        case $answer in
-            y | Y | yes | YES ) answer="y"; adddomain="1";;
-            n | N | no | NO ) answer="n"; adddomain="0"; exit 1;;
-            *) finish="-1";
-                echo -n 'Invalid Response\n';
-        esac
-    fi
-done
+        if [ "$answer" = '' ];
+        then
+            answer=""
+        else
+            case $answer in
+                y | Y | yes | YES ) answer="y";;
+                n | N | no | NO ) answer="n"; exit 1;;
+                *) finish="-1";
+                    echo -n 'Invalid Response\n';
+            esac
+        fi
+    done
+fi
+
+# Prompt - Backup NGINX or Varnish Settings, Do you wish to Continue.
+if [[ "$nginx" == "1" || "$varnish" == "1" ]]; then
+    finish="-1"
+    backupconfig="0"
+    while [ "$finish" = '-1' ]
+    do
+        finish="1"
+        echo
+        read -p "Do you want to Backup existsing NGINX and Varnish configuration files [y/n]? " answer
+
+        if [ "$answer" = '' ];
+        then
+            answer=""
+        else
+            case $answer in
+                y | Y | yes | YES ) answer="y"; backupconfig='1';;
+                n | N | no | NO ) answer="n"; backupconfig='0';;
+                *) finish="-1";
+                    echo -n 'Invalid Response\n';
+            esac
+        fi
+    done
+fi
 
 # Default Variriable Declaration
 LOGFILE=/var/log/logfilename.log
