@@ -38,6 +38,7 @@ function dump_vars {
   if ! ${LOGFILE+false};then echo "LOGFILE = ${LOGFILE}";fi
   if ! ${SCRIPTDIR+false};then echo "SCRIPTDIR = ${SCRIPTDIR}";fi
   if ! ${DEBUG+false};then echo "DEBUG = ${DEBUG}";fi
+  if ! ${PUBLICIP+false};then echo "PUBLICIP = ${PUBLICIP}";fi
 }
 
 # Failure Function
@@ -147,6 +148,7 @@ fi
 LOGFILE=/var/log/logfilename.log
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 DEBUG=1
+PUBLICIP="$(dig @resolver1.opendns.com ANY myip.opendns.com +short)"
 
 Fail On This
 
