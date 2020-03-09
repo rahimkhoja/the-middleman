@@ -24,7 +24,7 @@ As Root Type
 yum install -y git
 # Need to fill this in
 
-##Useful Links
+## Useful Links
 GetPageSpeed RPM Repository: (Unfortunatly It's a Paid Service)
 
 https://www.getpagespeed.com/redhat
@@ -33,12 +33,12 @@ Bind with DLZ Support Documentation:
 
 http://bind-dlz.sourceforge.net/
 
-##Donations
+## Donations
 Many Bothans died getting this DNS server to you, honor them by sending me some Bitcoin(BTC). ;)
 
 BTC: 1K4N5msYZHse6Hbxz4oWUjwqPf8wu6ducV
 
-##License
+## License
 Released under the GNU General Public License v3. (Not sure this is even valid)
 
 http://www.gnu.org/licenses/gpl-3.0.html
