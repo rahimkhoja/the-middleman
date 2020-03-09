@@ -3,7 +3,7 @@
 
 ## Description
 
-The Middle Map website optimization and cacheing system acts as a proxy for websites. While being proxied, the site content gets optimizted and cached, which dramatically improves site proformance and PageSpeed score. Getting higher scores on Page Speed Insights ensures websites get better Google search rankings. 
+The Middle Map website optimization and caching system acts as a proxy for websites. While being proxies, the site content gets optimized and cached, which dramatically improves site performance and PageSpeed score. Getting higher scores on Page Speed Insights ensures websites get better Google search rankings. 
 
 
 ## Components:
@@ -19,11 +19,11 @@ The Middle Map website optimization and cacheing system acts as a proxy for webs
 ## Requirements:
 
 1.  Basic CentOS 7.x Server with Root access. 
-2.  A Public IP assingned or routed to the server.
+2.  A Public IP assigned or routed to the server.
 3.  Internet Access (this should be a given)
 
 
-## Deployment Instrcutions:
+## Deployment Instructions:
 
 #### As Root Type
 ```
@@ -42,7 +42,7 @@ Since I am extremely lazy I am not going to offer any support. Well maybe every 
 That being said, time was spent documenting each command in the scripts. This should allow the scripts to be easily understood and modified if needed. 
 
 
-## Usefull Information
+## Useful Information
 
 ### Commands 
 
@@ -75,7 +75,7 @@ echo '104.18.48.227/32 via 172.19.254.1 dev ens192' >>
 ```
 
 ### Links
-GetPageSpeed RPM Repository: (Unfortunatly It's a Paid Service)
+GetPageSpeed RPM Repository: (Unfortunately It's a Paid Service)
 
 https://www.getpagespeed.com/redhat
 
@@ -83,11 +83,11 @@ Varnish 4.x Website:
 
 https://varnish-cache.org/docs/4.1/
 
-Nginx Website:
+Nixing Website:
 
 https://nginx.org/en/docs/
 
-PageSpeed Module Webite:
+Passed Module Website:
 
 https://www.modpagespeed.com/doc/configuration
 
@@ -97,7 +97,7 @@ https://docs.nginx.com/nginx/admin-guide/dynamic-modules/brotli/
 
 
 ## Donations
-Many Bothans died getting this DNS server to you, honor them by sending me some Bitcoin(BTC). ;)
+Many Bothans died getting this optimization and caching system to you, honor them by sending me some Bitcoin(BTC). ;)
 
 BTC: 1K4N5msYZHse6Hbxz4oWUjwqPf8wu6ducV
 
