@@ -1,5 +1,6 @@
-# middleman
-Website Optimization and Caching System
+# Middle Man - Website Optimization and Caching System
+
+The Middle Map website optimization and cacheing system acts as a proxy for websites. While being proxied, the site content gets optimizted and cached, which dramatically improves site proformance and PageSpeed score. 
 
 
 
