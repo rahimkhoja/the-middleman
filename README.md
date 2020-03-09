@@ -1,13 +1,12 @@
 # Middle Man - Website Optimization and Caching System
 ### By: Rahim Khoja (rahim@khoja.ca)
-### 
 
 ## Description
 
 The Middle Map website optimization and cacheing system acts as a proxy for websites. While being proxied, the site content gets optimizted and cached, which dramatically improves site proformance and PageSpeed score. Getting higher scores on Page Speed Insights ensures websites get better Google search rankings. 
 
+
 ## Components:
---------------
 
 1.  Cockpit
 2.  NGINX 
@@ -18,79 +17,92 @@ The Middle Map website optimization and cacheing system acts as a proxy for webs
 
 
 ## Requirements:
-----------------
 
-* Root access to a CentOS 7.* Server with enough space to host the BCH blockchain. (500GB or more)
-* Internet Access.  
-
-
-
-## Commands 
-
-### Clear the Varnish Cache 
-
-```
-varnishadm -T 127.0.0.1:6082 url.purge .
-```
-
-Quick Deployment Instrcutions (Work in Progress)
-For quick deployment please ensure:
-
-Root access to an updated CentOS 7 server.
-As Root Type
-yum install -y git
-# Need to fill this in
-
-## Useful Links
-GetPageSpeed RPM Repository: (Unfortunatly It's a Paid Service)
-
-https://www.getpagespeed.com/redhat
-
-Bind with DLZ Support Documentation:
-
-http://bind-dlz.sourceforge.net/
-
-## Donations
-Many Bothans died getting this DNS server to you, honor them by sending me some Bitcoin(BTC). ;)
-
-BTC: 1K4N5msYZHse6Hbxz4oWUjwqPf8wu6ducV
-
-## License
-Released under the GNU General Public License v3. (Not sure this is even valid)
-
-http://www.gnu.org/licenses/gpl-3.0.html
+1.  Basic CentOS 7.x Server with Root access. 
+2.  A Public IP assingned or routed to the server.
+3.  Internet Access (this should be a given)
 
 
-/etc/sysconfig/network-scripts/route-ens192
-
-
-
-### Quick Deployment Instrcutions (Work in Progress)
------------
-
-For quick deployment please ensure:
-
-* Root access to an updated CentOS 7 server. 
-
+## Deployment Instrcutions:
 
 #### As Root Type
-```bash
+```
 yum install -y git
 cd ~
-git clone https://github.com/CanadianRepublican/BitcoinCash-Daemon-Deployment-CentOS7.git BCH-Deploy
-cd BCH-Deploy
-bash deploy-bch-daemon.sh
+git clone https://github.com/rahimkhoja/middleman.git MiddleMan
+cd MiddleMan
+bash setup_middleman.sh
 
 ```
 
-
-
-### Support
------------
+## Support
 
 Since I am extremely lazy I am not going to offer any support. Well maybe every once-n-a while. It really depends on my mood. 
 
 That being said, time was spent documenting each command in the scripts. This should allow the scripts to be easily understood and modified if needed. 
 
 
+## Usefull Information
 
+### Commands 
+
+#### Clear the Varnish Cache 
+
+```
+varnishadm -T 127.0.0.1:6082 url.purge .
+```
+
+#### Reload NGINX
+
+```
+service nginx reload
+```
+
+#### Test if Varnish is correctly configured for a particular Domain.
+
+Make sure you update 'example.com' with your domain name.
+```
+curl --verbose --header 'Host: example.com' 'http://127.0.0.1:6081'
+
+```
+
+#### Add Static Route To Interface
+
+Make sure you update 'ens192' with your systems Network Device and the Route you wish to add.  
+```
+echo '104.18.48.227/32 via 172.19.254.1 dev ens192' >>
+/etc/sysconfig/network-scripts/route-ens192
+```
+
+### Links
+GetPageSpeed RPM Repository: (Unfortunatly It's a Paid Service)
+
+https://www.getpagespeed.com/redhat
+
+Varnish 4.x Website:
+
+https://varnish-cache.org/docs/4.1/
+
+Nginx Website:
+
+https://nginx.org/en/docs/
+
+PageSpeed Module Webite:
+
+https://www.modpagespeed.com/doc/configuration
+
+Brotli:
+
+https://docs.nginx.com/nginx/admin-guide/dynamic-modules/brotli/
+
+
+## Donations
+Many Bothans died getting this DNS server to you, honor them by sending me some Bitcoin(BTC). ;)
+
+BTC: 1K4N5msYZHse6Hbxz4oWUjwqPf8wu6ducV
+
+
+## License
+Released under the GNU General Public License v3. 
+
+http://www.gnu.org/licenses/gpl-3.0.html
