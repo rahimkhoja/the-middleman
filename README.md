@@ -1,11 +1,27 @@
 # Middle Man - Website Optimization and Caching System
+### By: Rahim Khoja (rahim@khoja.ca)
+### 
 
-The Middle Map website optimization and cacheing system acts as a proxy for websites. While being proxied, the site content gets optimizted and cached, which dramatically improves site proformance and PageSpeed score. 
+## Description
+
+The Middle Map website optimization and cacheing system acts as a proxy for websites. While being proxied, the site content gets optimizted and cached, which dramatically improves site proformance and PageSpeed score. Getting higher scores on Page Speed Insights ensures websites get better Google search rankings. 
+
+## Components:
+--------------
+
+1.  Cockpit
+2.  NGINX 
+3.  NGINX Brotli Module
+4.  NGINX PageSpeed Module
+5.	Certbot (https://letsencrypt.org/)
+6.  Varnish 4  
 
 
+## Requirements:
+----------------
 
-/etc/sysconfig/network-scripts/route-ens192
-
+* Root access to a CentOS 7.* Server with enough space to host the BCH blockchain. (500GB or more)
+* Internet Access.  
 
 
 
@@ -43,4 +59,38 @@ BTC: 1K4N5msYZHse6Hbxz4oWUjwqPf8wu6ducV
 Released under the GNU General Public License v3. (Not sure this is even valid)
 
 http://www.gnu.org/licenses/gpl-3.0.html
+
+
+/etc/sysconfig/network-scripts/route-ens192
+
+
+
+### Quick Deployment Instrcutions (Work in Progress)
+-----------
+
+For quick deployment please ensure:
+
+* Root access to an updated CentOS 7 server. 
+
+
+#### As Root Type
+```bash
+yum install -y git
+cd ~
+git clone https://github.com/CanadianRepublican/BitcoinCash-Daemon-Deployment-CentOS7.git BCH-Deploy
+cd BCH-Deploy
+bash deploy-bch-daemon.sh
+
+```
+
+
+
+### Support
+-----------
+
+Since I am extremely lazy I am not going to offer any support. Well maybe every once-n-a while. It really depends on my mood. 
+
+That being said, time was spent documenting each command in the scripts. This should allow the scripts to be easily understood and modified if needed. 
+
+
 
