@@ -203,8 +203,11 @@ yum -y install https://extras.getpagespeed.com/release-latest.rpm
 sed -i 's@repo_gpgcheck=.*@repo_gpgcheck=1@' /etc/yum.repos.d/getpagespeed-extras.repo
 yum clean
 
-# Install CertBot, Nginx, Nginx PageSpeed Module, Nginx Brotli Module, Varnish, Varnish Modules, Varnish Geo IP, & Cockpit
-yum install -y letsencrypt nginx certbot certbot-nginx cockpit nginx-module-pagespeed nginx-module-nbr varnish varnish-modules vmod-geoip2
+# GetPageSpeed RPM's (Nginx, Nginx PageSpeed Module, Nginx Brotli Module, Varnish, Varnish Modules, Varnish Geo IP)
+yum install -y geoipupdate nginx nginx-module-pagespeed nginx-module-pagespeed-selinux nginx-module-nbr varnish varnish-libs varnish-modules perl-Test-Simple perl-Scalar-List-Utils
+
+# Install CertBot, Varnish Mod, & Cockpit
+yum install -y letsencrypt certbot certbot-nginx cockpit vmod-geoip2
 
 # Create Nginx PageSpeed Module Cache Root Directory
 mkdir -p /var/cache/pagespeed
