@@ -55,7 +55,23 @@ function failure() {
 # Failure Function Trap
 trap 'failure ${LINENO} "$BASH_COMMAND"' ERR
 
+# Default Variriable Declaration
+LOGFILE=/var/log/middleman_setup.log
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+DEBUG=1
+STATUS="Initializing"
+TIMESTAMP="$( date +%s )"
+#PUBLICIP="$(dig @resolver1.opendns.com ANY myip.opendns.com +short)"
+finish="-1"
+varnish="0"
+nginx="0"
+middleman="0"
+reinstall="0"
+backupconfig="0"
+getpagespeed="0"
+
 # Check the bash shell script is being run by root
+STATUS="Check - Script Run as Root user"
 if [[ $EUID -ne 0 ]];
 then
     echo "This script must be run as root" 1>&2
@@ -63,20 +79,20 @@ then
 fi
 
 # Check if Varnish is installed.
-varnish="0"
+STATUS="Check - Is Varnish installed"
 if [[ -d "/etc/varnish" ]]; then
    varnish="1" 
 fi
 
 # Check if NGINX is installed.
-nginx="0"
+STATUS="Check - Is Nginx installed"
 if [[ -d "/etc/nginx" ]]; then
    nginx="1" 
 fi
 
 # Prompt to Confirm Installation of MiddleMan
+STATUS="Prompt - Install Middle Man"
 finish="-1"
-middleman="0"
 while [ "$finish" = '-1' ]
 do
     finish="1"
@@ -97,9 +113,9 @@ do
 done
 
 # Prompt - NGINX or Varnish are Already Installed, Do you wish to Continue.
+STATUS="Prompt - Varnish or Nginx are already installed, Do you want to continue"
 if [[ "$nginx" == "1" || "$varnish" == "1" ]]; then
     finish="-1"
-    reinstall="0"
     while [ "$finish" = '-1' ]
     do
         finish="1"
@@ -121,9 +137,9 @@ if [[ "$nginx" == "1" || "$varnish" == "1" ]]; then
 fi
 
 # Prompt - Backup NGINX or Varnish Settings, Do you wish to Continue.
+STATUS="Prompt - Backup Varnish and Nginx settings"
 if [[ "$nginx" == "1" || "$varnish" == "1" ]]; then
     finish="-1"
-    backupconfig="0"
     while [ "$finish" = '-1' ]
     do
         finish="1"
@@ -144,24 +160,48 @@ if [[ "$nginx" == "1" || "$varnish" == "1" ]]; then
     done
 fi
 
-# Default Variriable Declaration
-LOGFILE=/var/log/logfilename.log
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-DEBUG=1
-PUBLICIP="$(dig @resolver1.opendns.com ANY myip.opendns.com +short)"
+# Prompt - Use GetPageSpeed Repo or Local RPM's.
+STATUS="Prompt - Install and Use GetPageSpeed Repo"
+finish="-1"
+while [ "$finish" = '-1' ]
+do
+    finish="1"
+    echo
+    read -p "Do you want to Install & Use the GetPageSpeed Repo? (Highly Suggested - Paid Service) " answer
+    
+    if [ "$answer" = '' ];
+    then
+        answer=""
+    else
+        case $answer in
+            y | Y | yes | YES ) answer="y"; getpagespeed='1';;
+            n | N | no | NO ) answer="n"; getpagespeed='0';;
+            *) finish="-1";
+                echo -n 'Invalid Response\n';
+        esac
+    fi
+done
 
-Fail On This
+# Create NGINX & Varnish Backups
+STATUS="Stopping NGINX & Varnish"
+service nginx stop || :
+service varnish stop || :
+if [[ "$backupconfig" = '1' ]]; then
+    STATUS="Backup - Backup NGINX & Varnish Config"
+    mv /etc/nginx "/etc/nginx.old.${TIMESTAMP}"
+    mv /etc/varnish "/etc/varnish.old.${TIMESTAMP}"
+fi
+
+# Install EPEL Repo and System Requirements
+yum install -y @Base @Core "@Development Tools" kernel kernel-devel kernel-tools kernel-tools-libs kernel-headers openssh-clients expect make perl patch dkms gcc bzip2 sudo openssl-devel readline-devel zlib-devel net-tools vim wget curl rsync ansible libselinux-python kernel-devel kernel-tools kernel epel-release open-vm-tools http-tools bind-utils
+
+# Update and Upgrade the System
+yum update -y && yum -y upgrade
 
 # getPageSpeed Repo Installation
 yum -y install https://extras.getpagespeed.com/release-latest.rpm
 sed -i 's@repo_gpgcheck=.*@repo_gpgcheck=1@' /etc/yum.repos.d/getpagespeed-extras.repo
 yum clean
-
-# Install EPEL Repo and System Requirements
-yum install -y @Base @Core @Development Tools kernel kernel-devel kernel-tools kernel-tools-libs kernel-headers openssh-clients expect make perl patch dkms gcc bzip2 sudo openssl-devel readline-devel zlib-devel net-tools vim wget curl rsync ansible libselinux-python kernel-devel kernel-tools kernel epel-release open-vm-tools http-tools bind-utils
-
-# Update and Upgrade the System
-yum update -y && yum -y upgrade
 
 # Install CertBot, Nginx, Nginx PageSpeed Module, Nginx Brotli Module, Varnish, Varnish Modules, Varnish Geo IP, & Cockpit
 yum install -y letsencrypt nginx certbot certbot-nginx cockpit nginx-module-pagespeed nginx-module-nbr varnish varnish-modules vmod-geoip2
