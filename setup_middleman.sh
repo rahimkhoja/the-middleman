@@ -222,22 +222,16 @@ fi
 STATUS="Install - Install letsencrypt, certbot, certbot-nginx, cockpit, and vmod-geoip2"
 yum install -y letsencrypt certbot certbot-nginx cockpit vmod-geoip2
 
-# Create Nginx PageSpeed Module Cache Root Directory
-STATUS="Create Directory - Create Pagespeed Cache Directory"
-mkdir -p /var/cache/pagespeed
-
-# SELINUX - Allow HTTPD Network Connection Access
-STATUS="Enable Feature - Allow HTTP connections from NGINX"
-setsebool -P httpd_can_network_connect 1
-
 # Enable Services
+STATUS="Enable Services - NGINX, Varnish, Cockpit, Cerbot Renew Service, and Certbot Renew Timer"
 systemctl enable nginx
 systemctl enable varnish
 systemctl enable cockpit
 systemctl enable certbot-renew.service 
 systemctl enable certbot-renew.timer
 
-# Setup Firewall-D 
+# Setup Firewall-D
+STATUS="Firewall - Setup Firewall for http, https, cockpit, 8080, 9090, 6080, 6081, and 6082"
 service firewalld start
 firewall-cmd --permanent --add-service=http
 firewall-cmd --permanent --add-service=https
@@ -250,34 +244,38 @@ firewall-cmd --permanent --add-port=6082/tcp   # May Not Be Needed
 firewall-cmd --reload
 
 # Create Nginx Directories
+STATUS="Create Directory - Create NGINX Directories"
 mkdir -p /etc/nginx/defaults || :
 mkdir -p /etc/nginx/sites-available || :
 mkdir -p /etc/nginx/sites-enabled || :
 
 # Create Varnish Directories 
+STATUS="Create Directory - Create Varnish Directories"
 mkdir -p /etc/varnish/sites-enabled || :
 mkdir -p /etc/varnish/sites-available || :
 
+# Create Nginx PageSpeed Module Cache Root Directory
+STATUS="Create Directory - Create Pagespeed Cache Directory"
+mkdir -p /var/cache/pagespeed
+
 # Create SSL Cert Directories
+STATUS="Create Directory - Create SSL Cert Directory"
 mkdir -p /etc/ssl/certs || :
 
+# SELINUX - Allow HTTPD Network Connection Access
+STATUS="Enable Feature - Allow HTTP connections from NGINX"
+setsebool -P httpd_can_network_connect 1
+
 # Create Local SSL Cert
+STATUS="SSL Certificate - Generate Local System Certificate"
 openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 #openssl dhparam -out /etc/ssl/dhparams.pem 2048
-
-# Backup Original Varnish Files
-mv -f /etc/varnish/varnish.params /etc/varnish/varnish.params.orig || :
-mv -f /etc/varnish/default.vcl /etc/varnish/default.vcl.orig || :
 
 # Copy Default Varnish Config Files 
 cp "${SCRIPTDIR}/etc/varnish/varnish.params" /etc/varnish/varnish.params
 cp "${SCRIPTDIR}/etc/varnish/all-vhosts.vcl" /etc/varnish/all-vhosts.vcl
 cp "${SCRIPTDIR}/etc/varnish/default.vcl" /etc/varnish/default.vcl
 cp "${SCRIPTDIR}/etc/varnish/catch-all.vcl" /etc/varnish/catch-all.vcl
-
-# Backup Original NGINX Files
-mv -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig || :
-mv -f /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.orig || :
 
 # Copy Default NGINX Config Files
 cp "${SCRIPTDIR}/etc/nginx/nginx.conf" /etc/nginx/nginx.conf
