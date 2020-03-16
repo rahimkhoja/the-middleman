@@ -212,9 +212,11 @@ if [[ "$getpagespeed" = '1' ]]; then
     
     # GetPageSpeed RPM's (Nginx, Nginx PageSpeed Module, Nginx Brotli Module, Varnish, Varnish Modules, Varnish Geo IP)
     yum install -y geoipupdate nginx nginx-module-pagespeed nginx-module-pagespeed-selinux nginx-module-nbr varnish varnish-libs varnish-modules perl-Test-Simple perl-Scalar-List-Utils
-
+else
+    # Install NGINX, Varnish, PageSpeed Module, Brotli Compression, and Dependancies from GIT
+    STATUS="Install - Install NGINX, Varnish, PageSpeed Module, Brotli Compression, and Dependancies from GIT"
+    yum -y install "${SCRIPTDIR}/RPMS/geoipupdate-3.1.1-4.el7.x86_64.rpm" "${SCRIPTDIR}/RPMS/nginx-1.16.1-1.el7.ngx.x86_64.rpm" "${SCRIPTDIR}/RPMS/nginx-module-nbr-1.16.1.0.1.2-1.el7.gps.x86_64.rpm" "${SCRIPTDIR}/RPMS/nginx-module-pagespeed-1.16.1.1.13.35.2-1.el7.gps.x86_64.rpm" "${SCRIPTDIR}/RPMS/nginx-module-pagespeed-selinux-1.16.1.1.13.35.2-1.el7.gps.x86_64.rpm" "${SCRIPTDIR}/RPMS/perl-Scalar-List-Utils-1.50-1.el7.x86_64.rpm" "${SCRIPTDIR}/RPMS/perl-Test-Simple-1.302164-1.el7.noarch.rpm" "${SCRIPTDIR}/RPMS/varnish-4.1.11-1.el7.x86_64.rpm" "${SCRIPTDIR}/RPMS/varnish-libs-4.1.11-1.el7.x86_64.rpm" "${SCRIPTDIR}/RPMS/varnish-modules-4.1.11.0.15.0-1.el7.x86_64.rpm"  
 fi
-
 
 # Install CertBot, Varnish Mod, & Cockpit
 yum install -y letsencrypt certbot certbot-nginx cockpit vmod-geoip2
@@ -288,3 +290,19 @@ cp "${SCRIPTDIR}/etc/nginx/defaults/ssl.conf" /etc/nginx/defaults/ssl.conf
 cp "${SCRIPTDIR}/etc/nginx/defaults/compression.conf" /etc/nginx/defaults/compression.conf
 
 echo 'PATH="/opt/middleman/bin:$PATH";export PATH' >> /etc/profile
+
+
+
+geoipupdate.x86_64                      3.1.1-4.el7                  @getpagespeed-extras
+nginx.x86_64                            1:1.16.1-1.el7.ngx           @getpagespeed-extras
+nginx-module-nbr.x86_64                 1:1.16.1.0.1.2-1.el7.gps     @getpagespeed-extras
+nginx-module-pagespeed.x86_64           1:1.16.1.1.13.35.2-1.el7.gps @getpagespeed-extras
+nginx-module-pagespeed-selinux.x86_64   1:1.16.1.1.13.35.2-1.el7.gps @getpagespeed-extras
+perl-Scalar-List-Utils.x86_64           1.50-1.el7                   @getpagespeed-extras
+varnish.x86_64                          4.1.11-1.el7                 @getpagespeed-extras
+varnish-libs.x86_64                     4.1.11-1.el7                 @getpagespeed-extras
+varnish-modules.x86_64                  4.1.11.0.15.0-1.el7          @getpagespeed-extras
+getpagespeed-extras-release.noarch      10-11                        @getpagespeed-extras-noarch
+perl-Test-Simple.noarch                 1.302164-1.el7               @getpagespeed-extras-noarch
+
+
