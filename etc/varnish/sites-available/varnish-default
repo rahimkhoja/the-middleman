@@ -1,13 +1,13 @@
-backend mmjprca {
+backend CHANGEME {
     .host = "localhost";
     .port = "8080";
 }
 
 sub vcl_recv {
 
-    if (req.http.Host == "mmjpr.ca" || req.http.Host == "www.mmjpr.ca" ) {
+    if (req.http.Host == "CHANGE.ME" || req.http.Host == "www.CHANGE.ME" ) {
 
-        set req.backend_hint = mmjprca;
+        set req.backend_hint = CHANGEME;
 
         # Setting http headers for backend
         set req.http.X-Forwarded-For = client.ip;
