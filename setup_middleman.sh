@@ -295,7 +295,7 @@ cp "${SCRIPTDIR}/etc/varnish/sites-available/varnish-default" /etc/varnish/sites
 # Copy Default NGINX Config Files
 STATUS="Copy Default Files - Copying Default NGINX Config Files"
 cp "${SCRIPTDIR}/etc/nginx/nginx.conf" /etc/nginx/nginx.conf
-cp "${SCRIPTDIR}/etc/nginx/sites-enabled/default.conf" /etc/nginx/sites-enabled/default.conf
+cp "${SCRIPTDIR}/etc/nginx/sites-available/default.conf" /etc/nginx/sites-enabled/default.conf
 cp "${SCRIPTDIR}/etc/nginx/sites-available/nginx-default" /etc/nginx/sites-available/nginx-default
 cp "${SCRIPTDIR}/etc/nginx/defaults/general.conf" /etc/nginx/defaults/general.conf
 cp "${SCRIPTDIR}/etc/nginx/defaults/pagespeed.conf" /etc/nginx/defaults/pagespeed.conf
