@@ -275,15 +275,18 @@ openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 #openssl dhparam -out /etc/ssl/dhparams.pem 2048
 
 # Copy Default Varnish Config Files 
+STATUS="Copy Default Files - Copying Default Varnish Config Files"
 cp "${SCRIPTDIR}/etc/varnish/varnish.params" /etc/varnish/varnish.params
 cp "${SCRIPTDIR}/etc/varnish/all-vhosts.vcl" /etc/varnish/all-vhosts.vcl
 cp "${SCRIPTDIR}/etc/varnish/default.vcl" /etc/varnish/default.vcl
 cp "${SCRIPTDIR}/etc/varnish/catch-all.vcl" /etc/varnish/catch-all.vcl
+cp "${SCRIPTDIR}/etc/varnish/sites-available/varnish-default" /etc/varnish/sites-available/varnish-default
 
 # Copy Default NGINX Config Files
+STATUS="Copy Default Files - Copying Default NGINX Config Files"
 cp "${SCRIPTDIR}/etc/nginx/nginx.conf" /etc/nginx/nginx.conf
 cp "${SCRIPTDIR}/etc/nginx/sites-enabled/default.conf" /etc/nginx/sites-enabled/default.conf
-cp "${SCRIPTDIR}/etc/nginx/sites-available/nginx-confd-default" /etc/nginx/sites-available/nginx-confd-default
+cp "${SCRIPTDIR}/etc/nginx/sites-available/nginx-default" /etc/nginx/sites-available/nginx-default
 cp "${SCRIPTDIR}/etc/nginx/defaults/general.conf" /etc/nginx/defaults/general.conf
 cp "${SCRIPTDIR}/etc/nginx/defaults/pagespeed.conf" /etc/nginx/defaults/pagespeed.conf
 cp "${SCRIPTDIR}/etc/nginx/defaults/proxy.conf" /etc/nginx/defaults/proxy.conf
@@ -293,4 +296,9 @@ cp "${SCRIPTDIR}/etc/nginx/defaults/pagespeed.conf" /etc/nginx/defaults/pagespee
 cp "${SCRIPTDIR}/etc/nginx/defaults/ssl.conf" /etc/nginx/defaults/ssl.conf
 cp "${SCRIPTDIR}/etc/nginx/defaults/compression.conf" /etc/nginx/defaults/compression.conf
 
+# Copy The Middle Man Binaries 
+
+
+# Add The Middle Man Bin Directory to System Path
+STATUS="System Path - Update Path with The Middle Man Bin Directory"
 echo 'PATH="/opt/middleman/bin:$PATH";export PATH' >> /etc/profile
