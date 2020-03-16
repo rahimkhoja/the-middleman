@@ -1,5 +1,5 @@
 #!/bin/bash
-# Middle Man - Website Caching & Optimizing System - System Setup Script
+# The Middle Man - Website Caching & Optimizing System - System Setup Script
 # By Rahim Khoja (rahim.khoja@alumni.ubc.ca)
 # https://www.linkedin.com/in/rahim-khoja-879944139/
 
@@ -21,7 +21,7 @@ echo "░░░░░░▄██▀░░░░░▀▀▀░░█"
 echo "░░░░░▄█░░░░░░░░░░░░░▐▌"
 echo "░▄▄▄▄█▌░░░░░░░░░░░░░░▀█▄▄▄▄▀▀▄"
 echo -e "▌░░░░░▐░░░░░░░░░░░░░░░░▀▀▄▄▄▀\033[0m"
-echo "---Middle Man - Website Caching & Optimizing System - System Setup Script---"
+echo "---The Middle Man - Website Caching & Optimizing System - System Setup Script---"
 echo "---By: Rahim Khoja (rahim.khoja@alumni.ubc.ca)---"
 echo
 
@@ -35,21 +35,21 @@ set -eE  # same as: `set -o errexit -o errtrace`
 
 # Dump Vars Function
 function dump_vars {
-  if ! ${LOGFILE+false};then echo "LOGFILE = ${LOGFILE}";fi
-  if ! ${SCRIPTDIR+false};then echo "SCRIPTDIR = ${SCRIPTDIR}";fi
-  if ! ${DEBUG+false};then echo "DEBUG = ${DEBUG}";fi
-  if ! ${PUBLICIP+false};then echo "PUBLICIP = ${PUBLICIP}";fi
+    if ! ${LOGFILE+false};then echo "LOGFILE = ${LOGFILE}";fi
+    if ! ${SCRIPTDIR+false};then echo "SCRIPTDIR = ${SCRIPTDIR}";fi
+    if ! ${DEBUG+false};then echo "DEBUG = ${DEBUG}";fi
+    if ! ${PUBLICIP+false};then echo "PUBLICIP = ${PUBLICIP}";fi
 }
 
 # Failure Function
 function failure() {
-  local lineno=$1
-  local msg=$2
-  echo "Error at Line: $lineno. - $msg"
-  echo ""
-  if [[ $DEBUG -eq 1 ]]; then
-    dump_vars
-  fi
+    local lineno=$1
+    local msg=$2
+    echo "Error at Line: $lineno. - $msg"
+    echo ""
+    if [[ $DEBUG -eq 1 ]]; then
+      dump_vars
+    fi
 }
 
 # Failure Function Trap
@@ -81,13 +81,13 @@ fi
 # Check if Varnish is installed.
 STATUS="Check - Is Varnish installed"
 if [[ -d "/etc/varnish" ]]; then
-   varnish="1" 
+    varnish="1" 
 fi
 
 # Check if NGINX is installed.
 STATUS="Check - Is Nginx installed"
 if [[ -d "/etc/nginx" ]]; then
-   nginx="1" 
+    nginx="1" 
 fi
 
 # Prompt to Confirm Installation of MiddleMan
@@ -219,12 +219,15 @@ else
 fi
 
 # Install CertBot, Varnish Mod, & Cockpit
+STATUS="Install - Install letsencrypt, certbot, certbot-nginx, cockpit, and vmod-geoip2"
 yum install -y letsencrypt certbot certbot-nginx cockpit vmod-geoip2
 
 # Create Nginx PageSpeed Module Cache Root Directory
+STATUS="Create Directory - Create Pagespeed Cache Directory"
 mkdir -p /var/cache/pagespeed
 
 # SELINUX - Allow HTTPD Network Connection Access
+STATUS="Enable Feature - Allow HTTP connections from NGINX"
 setsebool -P httpd_can_network_connect 1
 
 # Enable Services
