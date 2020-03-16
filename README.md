@@ -32,7 +32,7 @@ The Middle Man website optimization and caching system acts as a fast caching pr
 ```
 yum install -y git
 cd ~
-git clone https://github.com/rahimkhoja/middleman.git MiddleMan
+git clone https://github.com/rahimkhoja/the-middleman.git MiddleMan
 cd MiddleMan
 bash setup_middleman.sh
 
