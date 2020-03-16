@@ -53,7 +53,8 @@ function dump_vars {
 function failure() {
     local lineno=$1
     local msg=$2
-    echo "\033[0;31mError at Line Number $lineno: '$msg'\033[0m"
+    echo ""
+    echo -e "\033[0;31mError at Line Number $lineno: '$msg'\033[0m"
     echo ""
     if [[ $DEBUG -eq 1 ]]; then
       dump_vars
@@ -84,6 +85,9 @@ then
     echo "This script must be run as root" 1>&2
     exit 1
 fi
+
+STATUS="Starting Installation"
+echo "$(date \"+%FT%T\") $STATUS" >> "${LOGFILE}"
 
 # Check if Varnish is installed.
 STATUS="Check - Is Varnish installed"
@@ -321,6 +325,6 @@ echo 'PATH="/opt/middleman/bin:$PATH";export PATH' >> /etc/profile
 
 echo
 echo
-echo "The Middle Man has been \033[0;42msuccessfully\033[0m installed!"
+echo -e "The Middle Man has been \033[0;42msuccessfully\033[0m installed!"
 echo "Rebooting"
 reboot 
