@@ -288,7 +288,6 @@ setsebool -P httpd_can_network_connect 1
 # Create Local SSL Cert
 STATUS="SSL Certificate - Generate Local System Certificate"
 openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-#openssl dhparam -out /etc/ssl/dhparams.pem 2048
 
 # Copy Default Varnish Config Files 
 STATUS="Copy Default Files - Copying Default Varnish Config Files"
