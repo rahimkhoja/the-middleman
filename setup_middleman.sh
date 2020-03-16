@@ -192,13 +192,19 @@ if [[ "$backupconfig" = '1' ]]; then
     mv /etc/varnish "/etc/varnish.old.${TIMESTAMP}"
 fi
 
+# Remove Varnish and NGINX if already installed
+STATUS="Remove - Uninstall NGINX & Varnish if Installed"
+yum remove -y varnish nginx || :
+
 # Install EPEL Repo and System Requirements
+STATUS="Install - Install EPEL Repo and Requirements, Update and Upgrade Yum Packages as Needed"
 yum install -y @Base @Core "@Development Tools" kernel kernel-devel kernel-tools kernel-tools-libs kernel-headers openssh-clients expect make perl patch dkms gcc bzip2 sudo openssl-devel readline-devel zlib-devel net-tools vim wget curl rsync ansible libselinux-python kernel-devel kernel-tools kernel epel-release open-vm-tools http-tools bind-utils
 
 # Update and Upgrade the System
 yum -y update && yum -y upgrade
 
 if [[ "$getpagespeed" = '1' ]]; then
+    STATUS="Install - GetPageSpeed Repo"
     # getPageSpeed Repo Installation
     yum -y install https://extras.getpagespeed.com/release-latest.rpm
     sed -i 's@repo_gpgcheck=.*@repo_gpgcheck=1@' /etc/yum.repos.d/getpagespeed-extras.repo
