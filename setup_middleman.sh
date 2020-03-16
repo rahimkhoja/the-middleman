@@ -196,15 +196,19 @@ fi
 yum install -y @Base @Core "@Development Tools" kernel kernel-devel kernel-tools kernel-tools-libs kernel-headers openssh-clients expect make perl patch dkms gcc bzip2 sudo openssl-devel readline-devel zlib-devel net-tools vim wget curl rsync ansible libselinux-python kernel-devel kernel-tools kernel epel-release open-vm-tools http-tools bind-utils
 
 # Update and Upgrade the System
-yum update -y && yum -y upgrade
+yum -y update && yum -y upgrade
 
-# getPageSpeed Repo Installation
-yum -y install https://extras.getpagespeed.com/release-latest.rpm
-sed -i 's@repo_gpgcheck=.*@repo_gpgcheck=1@' /etc/yum.repos.d/getpagespeed-extras.repo
-yum clean
+if [[ "$getpagespeed" = '1' ]]; then
+    # getPageSpeed Repo Installation
+    yum -y install https://extras.getpagespeed.com/release-latest.rpm
+    sed -i 's@repo_gpgcheck=.*@repo_gpgcheck=1@' /etc/yum.repos.d/getpagespeed-extras.repo
+    yum clean
+    
+    # GetPageSpeed RPM's (Nginx, Nginx PageSpeed Module, Nginx Brotli Module, Varnish, Varnish Modules, Varnish Geo IP)
+    yum install -y geoipupdate nginx nginx-module-pagespeed nginx-module-pagespeed-selinux nginx-module-nbr varnish varnish-libs varnish-modules perl-Test-Simple perl-Scalar-List-Utils
 
-# GetPageSpeed RPM's (Nginx, Nginx PageSpeed Module, Nginx Brotli Module, Varnish, Varnish Modules, Varnish Geo IP)
-yum install -y geoipupdate nginx nginx-module-pagespeed nginx-module-pagespeed-selinux nginx-module-nbr varnish varnish-libs varnish-modules perl-Test-Simple perl-Scalar-List-Utils
+fi
+
 
 # Install CertBot, Varnish Mod, & Cockpit
 yum install -y letsencrypt certbot certbot-nginx cockpit vmod-geoip2
