@@ -259,6 +259,7 @@ mkdir -p /etc/varnish/sites-available || :
 # Create Nginx PageSpeed Module Cache Root Directory
 STATUS="Create Directory - Create Pagespeed Cache Directory"
 mkdir -p /var/cache/pagespeed
+chown -R nginx:nginx /var/cache/pagespeed
 
 # Create SSL Cert Directories
 STATUS="Create Directory - Create SSL Cert Directory"
