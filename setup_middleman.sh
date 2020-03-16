@@ -35,17 +35,25 @@ set -eE  # same as: `set -o errexit -o errtrace`
 
 # Dump Vars Function
 function dump_vars {
+    if ! ${STATUS+false};then echo "STATUS = ${STATUS}";fi
     if ! ${LOGFILE+false};then echo "LOGFILE = ${LOGFILE}";fi
     if ! ${SCRIPTDIR+false};then echo "SCRIPTDIR = ${SCRIPTDIR}";fi
     if ! ${DEBUG+false};then echo "DEBUG = ${DEBUG}";fi
     if ! ${PUBLICIP+false};then echo "PUBLICIP = ${PUBLICIP}";fi
+    if ! ${TIMESTAMP+false};then echo "TIMESTAMP = ${TIMESTAMP}";fi
+    if ! ${finish+false};then echo "finish = ${finish}";fi
+    if ! ${varnish+false};then echo "varnish = ${varnish}";fi
+    if ! ${nginx+false};then echo "nginx = ${nginx}";fi
+    if ! ${middleman+false};then echo "middleman = ${middleman}";fi
+    if ! ${backupconfig+false};then echo "backupconfig = ${backupconfig}";fi
+    if ! ${getpagespeed+false};then echo "getpagespeed = ${getpagespeed}";fi
 }
 
 # Failure Function
 function failure() {
     local lineno=$1
     local msg=$2
-    echo "Error at Line: $lineno. - $msg"
+    echo "\033[0;31mError at Line Number $lineno: '$msg'\033[0m"
     echo ""
     if [[ $DEBUG -eq 1 ]]; then
       dump_vars
@@ -66,7 +74,6 @@ finish="-1"
 varnish="0"
 nginx="0"
 middleman="0"
-reinstall="0"
 backupconfig="0"
 getpagespeed="0"
 
@@ -261,6 +268,9 @@ STATUS="Create Directory - Create Pagespeed Cache Directory"
 mkdir -p /var/cache/pagespeed
 chown -R nginx:nginx /var/cache/pagespeed
 
+# Create The Middle Man Binary Directory
+mkdir -p /opt/middleman/bin
+
 # Create SSL Cert Directories
 STATUS="Create Directory - Create SSL Cert Directory"
 mkdir -p /etc/ssl/certs || :
@@ -296,9 +306,19 @@ cp "${SCRIPTDIR}/etc/nginx/defaults/pagespeed.conf" /etc/nginx/defaults/pagespee
 cp "${SCRIPTDIR}/etc/nginx/defaults/ssl.conf" /etc/nginx/defaults/ssl.conf
 cp "${SCRIPTDIR}/etc/nginx/defaults/compression.conf" /etc/nginx/defaults/compression.conf
 
-# Copy The Middle Man Binaries 
-
+# Copy The Middle Man Binaries and set then as Executable
+STATUS="Binaries - Copy The Middle Man Binaries and set then as Executable"
+cp "${SCRIPTDIR}/opt/middleman/bin/add-domain.sh" /opt/middleman/bin/add-domain.sh
+cp "${SCRIPTDIR}/opt/middleman/bin/remove-domain.sh" /opt/middleman/bin/remove-domain.sh
+chmod +x /opt/middleman/bin/remove-domain.sh
+chmod +x /opt/middleman/bin/add-domain.sh
 
 # Add The Middle Man Bin Directory to System Path
 STATUS="System Path - Update Path with The Middle Man Bin Directory"
 echo 'PATH="/opt/middleman/bin:$PATH";export PATH' >> /etc/profile
+
+echo
+echo
+echo "The Middle Man has been \033[0;42msuccessfully\033[0m installed!"
+echo "Rebooting"
+reboot 
