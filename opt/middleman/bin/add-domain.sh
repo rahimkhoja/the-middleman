@@ -26,8 +26,10 @@ echo "---By: Rahim Khoja (rahim.khoja@alumni.ubc.ca)---"
 echo
 
 # Default Variables
-defaulthn="cookiethief.mech.ubc.ca"
-defaultproxy="http://10.10.10.60:8080/"
+defaulthn="example.local"
+defaultproxy="http://10.10.10.10:8080/"
+adddomain="0"
+finish="-1"
 
 # Check the bash shell script is being run by root
 if [[ $EUID -ne 0 ]];
@@ -41,12 +43,11 @@ cd /root
 
 # Add new Certbot SSL domain Prompt
 finish="-1"
-adddomain="0"
 while [ "$finish" = '-1' ]
 do
     finish="1"
     echo
-    read -p "Add new SSL domain to NGINX & Certbot [y/n]? " answer
+    read -p "Add new SSL domain to The Middle Man [y/n]? " answer
 
     if [ "$answer" = '' ];
     then
@@ -67,10 +68,10 @@ while [ "$finish" = '-1' ]
 do
     finish="1"
     echo
-    read -p "Enter Domain to generate a SSL certificate for [$defaulthn]: " HOSTNAME
+    read -p "Please enter the domain name to be added to The Middle Man [$defaulthn]: " HOSTNAME
     HOSTNAME=${HOSTNAME:-$defaulthn}
     echo
-    read -p "SSL Domain: $HOSTNAME [y/n]? " answer
+    read -p "New Domain: $HOSTNAME [y/n]? " answer
 
     if [ "$answer" = '' ];
     then
@@ -119,7 +120,6 @@ mkdir -p /var/cache/${HOSTNAME}
 chmod 700 /var/cache/${HOSTNAME}
 chown nginx:nginx /var/cache/${HOSTNAME}
 
-
 # Create Site Root for SSL Domain
 mkdir -p /var/www/${HOSTNAME}/.well-known
 
@@ -142,11 +142,13 @@ restorecon -R -v /var/www
 # Enable SSL in NGINX Virtual Host File
 sed -i '/^#/ s/^#//' /etc/nginx/conf.d/$HOSTNAME.conf
 
-# Restart NGINX to enable SSL
-service nginx restart
+# Reload NGINX to enable the new domain
+service nginx reload
 
-echo
-echo "If there are no errors above, the new SSL certificate is installed correctly."
+# Reload Varnish to enable the new domain
+service varnish reload
+
+# Finished
 echo
 echo "After SSL redirection is enabled and tested, run the command to test SSL certificate renwals: certbot --dry-run renew"
 
