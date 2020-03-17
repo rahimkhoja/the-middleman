@@ -1,6 +1,7 @@
 #!/bin/sh
-# Add New Domain to Middle Man. This includes CertBot SSL Certificate Setup, Varnish Configureation, and PageSpeed Module.
-# By Rahim Khoja (rahim@khoja.ca)
+# Add New Domain to The Middle Man. This includes CertBot SSL Certificate Setup, Varnish Configureation, and PageSpeed Module.
+# By Rahim Khoja (rahim.khoja@alumni.ubc.ca)
+# https://www.linkedin.com/in/rahim-khoja-879944139/
 
 echo
 echo -e "\033[0;31m░░░░░░░░▀▀▀██████▄▄▄"
@@ -20,10 +21,8 @@ echo "░░░░░░▄██▀░░░░░▀▀▀░░█"
 echo "░░░░░▄█░░░░░░░░░░░░░▐▌"
 echo "░▄▄▄▄█▌░░░░░░░░░░░░░░▀█▄▄▄▄▀▀▄"
 echo -e "▌░░░░░▐░░░░░░░░░░░░░░░░▀▀▄▄▄▀\033[0m"
-echo "---NGINX/Certbot/Varnish Proxy Cache - Add New Domain Script---"
-echo "---By: Rahim Khoja (rahim@khoja.ca)---"
-echo
-echo " Please note, this script has only been tested with users who are under 5 foot 8 inches in height!"
+echo "---The Middle Man - Website Caching & Optimizing System - Add Domain Script---"
+echo "---By: Rahim Khoja (rahim.khoja@alumni.ubc.ca)---"
 echo
 
 # Default Variables
