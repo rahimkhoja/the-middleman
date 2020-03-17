@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Add New Domain to The Middle Man. This includes CertBot SSL Certificate Setup, Varnish Configureation, and PageSpeed Module.
 # By Rahim Khoja (rahim.khoja@alumni.ubc.ca)
 # https://www.linkedin.com/in/rahim-khoja-879944139/
