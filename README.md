@@ -1,9 +1,9 @@
-# Middle Man - Website Optimization and Caching System
+# The Middle Man - Website Optimization and Caching System
 ### By: Rahim Khoja (rahim@khoja.ca)
 
 ## Description
 
-The Middle Man website optimization and caching system acts as a fast caching proxy for websites. While being proxied, the site content gets optimized and cached, which dramatically improves site performance and PageSpeed score. Getting higher scores on Page Speed Insights ensures websites get better Google search rankings. 
+The Middle Man website optimization and caching system acts as a fast caching proxy for websites. While being proxied, the site content gets optimized and cached, which dramatically improves site performance and PageSpeed score. Getting higher scores on Page Speed Insights ensures websites get better Google search rankings. SSL Certficates are automatcially generated via Let's Encrypt when the domains are added to The Middle Man. SSL Certificates are automatically renewed for domains.
 
 
 
