@@ -110,6 +110,14 @@ do
     fi
 done
 
+if [[ $PROXY == "https://"* ]]; then
+  echo "It's there!"
+fi
+
+if [[ $PROXY == "http://"* ]]; then
+  echo "It's there!"
+fi
+
 # Create SSL Domain NGINX Virtual Host
 cp /etc/nginx/conf.d/nginx-confd-default /etc/nginx/conf.d/$HOSTNAME.conf
 sed -i "s/<domain>/$HOSTNAME/g" /etc/nginx/conf.d/$HOSTNAME.conf
