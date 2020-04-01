@@ -208,8 +208,8 @@ fi
 # Remove Varnish and NGINX if already installed
 STATUS="Remove - Uninstall NGINX & Varnish if Installed"
 yum remove -y varnish nginx || :
-rm -rf "/etc/nginx" || :
-rm -rf "/etc/varnish" || :
+mv "/etc/nginx" /tmp || :
+mv "/etc/varnish" /tmp || :
 
 # Install EPEL Repo and System Requirements
 STATUS="Install - Install EPEL Repo and Requirements, Update and Upgrade Yum Packages as Needed"
