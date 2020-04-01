@@ -41,7 +41,8 @@ fi
 # Move to Root Folder
 cd /root
 
-# Add new Certbot SSL domain Prompt
+# Prompt to add new Domain and SSL Cert to Middle Man
+STATUS="Prompt - Add new Domain and SSL Cert to Middle Man"
 finish="-1"
 while [ "$finish" = '-1' ]
 do
@@ -64,6 +65,7 @@ done
 
 # Get SSL Domain Name
 finish="-1"
+STATUS="Prompt - Enter Domain Name"
 while [ "$finish" = '-1' ]
 do
     finish="1"
@@ -71,6 +73,7 @@ do
     read -p "Please enter the domain name to be added to The Middle Man [$defaulthn]: " HOSTNAME
     HOSTNAME=${HOSTNAME:-$defaulthn}
     echo
+    $HOSTNAME=$(echo "$HOSTNAME" | awk -F[/:] '{print $4}')
     read -p "New Domain: $HOSTNAME [y/n]? " answer
 
     if [ "$answer" = '' ];
@@ -87,6 +90,7 @@ do
 done
 
 # Get Proxy Site URL
+STATUS="Prompt - Destination Domain URL"
 finish="-1"
 while [ "$finish" = '-1' ]
 do
@@ -95,6 +99,28 @@ do
     read -p "Enter destination proxy URL for $HOSTNAME SSL domain [$defaultproxy]: " PROXY
     PROXY=${PROXY:-$defaultproxy}
     echo
+    
+    # extract the protocol
+    proto="$(echo $PROXY | grep :// | sed -e's,^\(.*://\).*,\1,g')"
+    # set default proto if none exists 
+    if [[ -z "$proto" ]]; then
+        proto="http://"
+    fi
+    # remove the protocol
+    url="$(echo ${PROXY/$proto/})"
+    # extract the user (if any)
+    user="$(echo $url | grep @ | cut -d@ -f1)"
+    # extract the host and port
+    hostport="$(echo ${url/$user@/} | cut -d/ -f1)"
+    # by request host without port    
+    host="$(echo $hostport | sed -e 's,:.*,,g')"
+    # by request - try to extract the port
+    port="$(echo $hostport | sed -e 's,^.*:,:,g' -e 's,.*:\([0-9]*\).*,\1,g' -e 's,[^0-9],,g')"
+    # extract the path (if any)
+    path="$(echo $url | grep / | cut -d/ -f2-)"
+
+    PROXY="${proto}${host}/${path}"
+    
     read -p "Proxy URL: $PROXY [y/n]? " answer
 
     if [ "$answer" = '' ];
@@ -110,51 +136,43 @@ do
     fi
 done
 
-if [[ $PROXY == "https://"* ]]; then
-  echo "It's there!"
-fi
-
-if [[ $PROXY == "http://"* ]]; then
-  echo "It's there!"
-fi
-
 # Create SSL Domain NGINX Virtual Host
-cp /etc/nginx/conf.d/nginx-confd-default /etc/nginx/conf.d/$HOSTNAME.conf
-sed -i "s/<domain>/$HOSTNAME/g" /etc/nginx/conf.d/$HOSTNAME.conf
-sed -i "s@<proxy>@$PROXY@g" /etc/nginx/conf.d/$HOSTNAME.conf
+#cp /etc/nginx/conf.d/nginx-confd-default /etc/nginx/conf.d/$HOSTNAME.conf
+#sed -i "s/<domain>/$HOSTNAME/g" /etc/nginx/conf.d/$HOSTNAME.conf
+#sed -i "s@<proxy>@$PROXY@g" /etc/nginx/conf.d/$HOSTNAME.conf
 
 # Create PageSpeed Cache Dir
-mkdir -p /var/cache/${HOSTNAME}
-chmod 700 /var/cache/${HOSTNAME}
-chown nginx:nginx /var/cache/${HOSTNAME}
+#mkdir -p /var/cache/${HOSTNAME}
+#chmod 700 /var/cache/${HOSTNAME}
+#chown nginx:nginx /var/cache/${HOSTNAME}
 
 # Create Site Root for SSL Domain
-mkdir -p /var/www/${HOSTNAME}/.well-known
+#mkdir -p /var/www/${HOSTNAME}/.well-known
 
 # Restart NGINX to enable http for cert generation
-service nginx restart
+#service nginx restart
 
 # Create Initial Lets Encrypt Cert for SSL Domain
-certbot certonly --webroot -w /var/www/$HOSTNAME -d $HOSTNAME -d www.$HOSTNAME
+#certbot certonly --webroot -w /var/www/$HOSTNAME -d $HOSTNAME -d www.$HOSTNAME
 
 # Create Local Cert
-openssl dhparam -out /etc/letsencrypt/live/$HOSTNAME/dhparams.pem 2048
+#openssl dhparam -out /etc/letsencrypt/live/$HOSTNAME/dhparams.pem 2048
 
 # Update Selinux and Permissions
-chown -R nginx:nginx /var/www
-semanage fcontext -a -t httpd_sys_content_t /var/www/$HOSTNAME/*
-restorecon -R -v /var/www
+#chown -R nginx:nginx /var/www
+#semanage fcontext -a -t httpd_sys_content_t /var/www/$HOSTNAME/*
+#restorecon -R -v /var/www
 
 # certbot --dry-run renew
 
 # Enable SSL in NGINX Virtual Host File
-sed -i '/^#/ s/^#//' /etc/nginx/conf.d/$HOSTNAME.conf
+#sed -i '/^#/ s/^#//' /etc/nginx/conf.d/$HOSTNAME.conf
 
 # Reload NGINX to enable the new domain
-service nginx reload
+#service nginx reload
 
 # Reload Varnish to enable the new domain
-service varnish reload
+#service varnish reload
 
 # Finished
 echo
