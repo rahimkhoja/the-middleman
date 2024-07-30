@@ -40,14 +40,6 @@ bash setup_middleman.sh
 
 
 
-## Support
-
-Since I am extremely lazy I am not going to offer any support. Well maybe every once-n-a while. It really depends on my mood. 
-
-That being said, time was spent documenting each command in the scripts. This should allow the scripts to be easily understood and modified if needed. 
-
-
-
 ## Useful Information
 
 ### Commands 
@@ -104,11 +96,18 @@ https://docs.nginx.com/nginx/admin-guide/dynamic-modules/brotli/
 
 
 
+## Support
+
+Since I am extremely lazy, I am not going to offer any support. Well, maybe every once in a while. It really depends on my mood.
+
+That being said, time was spent documenting each command in the scripts. This should allow the scripts to be easily understood and modified if needed.
+
+
 ## Donations
-Many Bothans died getting this optimization and caching system to you, honor them by sending me some Bitcoin(BTC). ;)
+Many Bothans died getting this optimization and caching system to you, honor them by sending me some Crypto. ;)
 
-BTC: 1K4N5msYZHse6Hbxz4oWUjwqPf8wu6ducV
-
+ETH Mainnet: 0x1F4EABD7495E4B3D1D4F6dac07f953eCb28fD798
+BNB Chain: 0x1F4EABD7495E4B3D1D4F6dac07f953eCb28fD798
 
 
 ## License
